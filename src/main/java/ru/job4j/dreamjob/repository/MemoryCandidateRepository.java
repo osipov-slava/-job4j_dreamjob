@@ -24,10 +24,10 @@ public class MemoryCandidateRepository implements CandidateRepository {
 
     private MemoryCandidateRepository() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        save(new Candidate(0, "Ivan Petrov", "2 years experience, Moscow", localDateTime));
-        save(new Candidate(0, "John White", "5 years experience, NY", localDateTime));
-        save(new Candidate(0, "James Brown", "1 years experience, LA", localDateTime));
-        save(new Candidate(0, "Da Li", "2 years experience, Macau", localDateTime));
+        save(new Candidate(0, "Ivan Petrov", "2 years experience", localDateTime, 1));
+        save(new Candidate(0, "John White", "5 years experience", localDateTime, 2));
+        save(new Candidate(0, "James Brown", "1 years experience", localDateTime, 2));
+        save(new Candidate(0, "Da Li", "2 years experience", localDateTime, 3));
     }
 
     @Override
@@ -44,9 +44,11 @@ public class MemoryCandidateRepository implements CandidateRepository {
 
     @Override
     public boolean update(Candidate candidate) {
-        return candidates.computeIfPresent(candidate.getId(),
-                (id, oldVacancy) -> new Candidate(oldVacancy.getId(), candidate.getName(),
-                                                  candidate.getDescription(), candidate.getCreationDate())) != null;
+        return candidates.computeIfPresent(candidate.getId(), (id, oldVacancy) -> {
+            return new Candidate(
+                    oldVacancy.getId(), candidate.getName(), candidate.getDescription(),
+                    candidate.getCreationDate(), candidate.getCityId());
+        }) != null;
     }
 
     @Override
