@@ -24,12 +24,12 @@ public class MemoryVacancyRepository implements VacancyRepository {
 
     private MemoryVacancyRepository() {
         LocalDateTime localDateTime = LocalDateTime.now();
-        save(new Vacancy(0, "Intern Java Developer", "Min experience 0 years, office, $300", localDateTime));
-        save(new Vacancy(0, "Junior Java Developer", "Min experience 0 years, office, $800", localDateTime));
-        save(new Vacancy(0, "Junior+ Java Developer", "Min experience 1 years, office, $1500", localDateTime));
-        save(new Vacancy(0, "Middle Java Developer", "Min experience 2 years, hybrid, $2500", localDateTime));
-        save(new Vacancy(0, "Middle+ Java Developer", "Min experience 3 years, remote or office, $3500", localDateTime));
-        save(new Vacancy(0, "Senior Java Developer", "Min experience 3 years, remote or office, $5000", localDateTime));
+        save(new Vacancy(0, "Intern Java Developer", "Min experience 0 years, office, $300", localDateTime, true));
+        save(new Vacancy(0, "Junior Java Developer", "Min experience 0 years, office, $800", localDateTime, true));
+        save(new Vacancy(0, "Junior+ Java Developer", "Min experience 1 years, office, $1500", localDateTime, false));
+        save(new Vacancy(0, "Middle Java Developer", "Min experience 2 years, hybrid, $2500", localDateTime, false));
+        save(new Vacancy(0, "Middle+ Java Developer", "Min experience 3 years, remote or office, $3500", localDateTime, true));
+        save(new Vacancy(0, "Senior Java Developer", "Min experience 3 years, remote or office, $5000", localDateTime, true));
     }
 
     @Override
@@ -48,7 +48,8 @@ public class MemoryVacancyRepository implements VacancyRepository {
     public boolean update(Vacancy vacancy) {
         return vacancies.computeIfPresent(vacancy.getId(),
                 (id, oldVacancy) -> new Vacancy(oldVacancy.getId(), vacancy.getTitle(),
-                                                vacancy.getDescription(), vacancy.getCreationDate())) != null;
+                                                vacancy.getDescription(), vacancy.getCreationDate(),
+                                                vacancy.getVisible())) != null;
     }
 
     @Override
