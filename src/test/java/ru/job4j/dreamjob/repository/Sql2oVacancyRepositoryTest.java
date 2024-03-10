@@ -98,6 +98,9 @@ public class Sql2oVacancyRepositoryTest {
         assertThat(sql2oVacancyRepository.deleteById(0)).isFalse();
     }
 
+    /**
+     * Additionally 'creationDate' must not be changed
+     */
     @Test
     public void whenUpdateThenGetUpdated() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
@@ -106,6 +109,7 @@ public class Sql2oVacancyRepositoryTest {
                 vacancy.getId(), "new title", "new description", creationDate.plusDays(1),
                 !vacancy.getVisible(), 1, file.getId()
         );
+        updatedVacancy.setCreationDate(creationDate);
         var isUpdated = sql2oVacancyRepository.update(updatedVacancy);
         var savedVacancy = sql2oVacancyRepository.findById(updatedVacancy.getId()).get();
         assertThat(isUpdated).isTrue();
