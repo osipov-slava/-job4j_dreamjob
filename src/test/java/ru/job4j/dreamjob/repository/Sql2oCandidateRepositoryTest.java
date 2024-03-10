@@ -96,6 +96,9 @@ public class Sql2oCandidateRepositoryTest {
         assertThat(sql2oCandidateRepository.deleteById(0)).isFalse();
     }
 
+    /**
+     * Additionally 'creationDate' must not be changed
+     */
     @Test
     public void whenUpdateThenGetUpdated() {
         var creationDate = now().truncatedTo(ChronoUnit.MINUTES);
@@ -103,6 +106,7 @@ public class Sql2oCandidateRepositoryTest {
         var updatedCandidate = new Candidate(
                 candidate.getId(), "new name", "new description", creationDate.plusDays(1), 2, file.getId()
         );
+        updatedCandidate.setCreationDate(creationDate);
         var isUpdated = sql2oCandidateRepository.update(updatedCandidate);
         var savedCandidate = sql2oCandidateRepository.findById(updatedCandidate.getId()).get();
         assertThat(isUpdated).isTrue();
